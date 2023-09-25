@@ -16,7 +16,7 @@ export default defineConfig(async (command) => {
         plugins: [
             react(),
             basicSsl(),
-            useGzip(needleConfig) ? viteCompression({ deleteOriginFile: true }) : null,
+            useGzip(needleConfig) && !process.env.CI ? viteCompression({ deleteOriginFile: true }) : null,
             needlePlugins(command, needleConfig),
         ],
 
