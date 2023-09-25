@@ -1,4 +1,4 @@
-# Needle Engine React Sample
+# Needle Engine + React Three Fiber
 
 Minimal starter project showing how to integrate Needle Engine into a react-three-fiber project
 
