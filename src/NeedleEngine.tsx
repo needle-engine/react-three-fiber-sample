@@ -1,5 +1,5 @@
 import { createElement, ReactElement, useEffect, useState } from 'react'
-import { useThree } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { Object3D } from 'three';
 import { Context, loadSync, GameObject, getParam, Camera } from '@needle-tools/engine';
 
@@ -22,6 +22,7 @@ export function NeedleEngine(props: NeedleEngineProps): ReactElement {
     useEffect(() => {
         if (!state.context) {
             const newContext = new Context({ name: "Needle Scene", alias: "needle-r3f", domElement: three.gl.domElement.parentElement, renderer: three.gl, camera: three.camera });
+            newContext.isManagedExternally = true
             let srcFiles = props?.src ?? globalThis["needle:codegen_files"];
             if (typeof srcFiles === "string") srcFiles = [srcFiles];
             if (srcFiles) {
@@ -42,6 +43,12 @@ export function NeedleEngine(props: NeedleEngineProps): ReactElement {
         if (state.context) {
             root.add(state.context.scene);
         }
+    });
+
+    let totalTime = 0;
+    useFrame((_, delta, xrframe) => {
+        totalTime += delta;
+        state.context?.update(totalTime, xrframe);
     });
 
     const root = new Object3D();
