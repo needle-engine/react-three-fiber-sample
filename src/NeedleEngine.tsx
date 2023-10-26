@@ -48,7 +48,10 @@ export function NeedleEngine(props: NeedleEngineProps): ReactElement {
     let totalTime = 0;
     useFrame((_, delta, xrframe) => {
         totalTime += delta;
-        state.context?.update(totalTime, xrframe);
+        if (state.context) {
+            state.context.targetFrameRate = undefined;
+            state.context.update(totalTime, xrframe);
+        }
     });
 
     const root = new Object3D();
